@@ -4,10 +4,12 @@ import { Container, ProductForm } from "@/shared/components/shared";
 import React from "react";
 
 export default async function ProductPage({
-  params: { id },
+  params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
+
   const product = await prisma.product.findFirst({
     where: { id: Number(id) },
     include: {
