@@ -1,21 +1,42 @@
+"use client";
+
 import React from "react";
-import { Input, Textarea } from "@/shared/components/ui";
-import { WhiteBlock } from "@/shared/components/shared";
+import {
+  AddressInput,
+  ErrorText,
+  FormTextarea,
+  WhiteBlock,
+} from "@/shared/components";
+import { Controller, useFormContext } from "react-hook-form";
 
 interface Props {
   className?: string;
 }
 
 export const CheckoutAddressForm: React.FC<Props> = ({ className }) => {
+  const { control } = useFormContext();
+
   return (
-    <WhiteBlock title="3. Адрес доставки">
+    <WhiteBlock title="3. Адрес доставки" className={className}>
       <div className="flex flex-col gap-5">
-        <Input
-          className="text-base"
-          placeholder="Введите адрес"
-          name="adress"
+        <Controller
+          render={({ field, fieldState }) => (
+            <>
+              <AddressInput onChange={field.onChange} />
+              {fieldState.error?.message && (
+                <ErrorText text={fieldState.error.message} />
+              )}
+            </>
+          )}
+          name="address"
+          control={control}
         />
-        <Textarea className="text-base" placeholder="Комментарий" rows={5} />
+        <FormTextarea
+          name="comment"
+          className="text-base"
+          placeholder="Комментарий"
+          rows={5}
+        />
       </div>
     </WhiteBlock>
   );
