@@ -3,10 +3,12 @@ import { notFound } from "next/navigation";
 import { ChooseProductModal } from "@/shared/components/shared";
 
 export default async function ProductModalPage({
-  params: { id },
+  params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
+
   const product = await prisma.product.findFirst({
     where: {
       id: Number(id),
